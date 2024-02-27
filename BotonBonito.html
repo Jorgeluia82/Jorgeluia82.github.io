@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Promedio</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f9dbe8; /* Rosa pastel */
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .container {
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        max-width: 400px;
+        width: 100%;
+    }
+    .button {
+        background-color: #f194b4; /* Rosa claro */
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+    .button:hover {
+        background-color: #ec407a; /* Rosa más intenso */
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+    }
+    .button:active {
+        box-shadow: none;
+        transform: translateY(3px);
+    }
+    .calificacion-button {
+        background-color: #f194b4; /* Rosa claro */
+        color: white;
+        padding: 15px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin: 5px;
+    }
+    .calificacion-button:hover {
+        background-color: #ec407a; /* Rosa más intenso */
+    }
+    .calificacion-button.selected {
+        background-color: #ec407a; /* Rosa más intenso */
+    }
+    #resultado {
+        font-weight: bold;
+        margin-top: 30px;
+        font-size: 20px;
+    }
+    .brand {
+        font-size: 24px;
+        color: #ec407a; /* Rosa más intenso */
+        margin-bottom: 30px;
+    }
+    .calificacion-input {
+        width: 50px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        margin-bottom: 20px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="brand">Calculadora de Promedio</div>
+
+    <div id="calificaciones-container">
+        <div>Ingresa el número de calificaciones:</div>
+        <input type="number" id="numero-calificaciones" min="1" max="10">
+        <button class="button" onclick="generarCampos()">Listo</button>
+    </div>
+
+    <div id="campos-calificaciones" style="display: none;"></div>
+
+    <button id="calcular" class="button" style="display:none;" onclick="calcularPromedio()">Calcular Promedio</button>
+
+    <div id="resultado"></div>
+</div>
+
+<script>
+    function generarCampos() {
+        var numCalificaciones = parseInt(document.getElementById('numero-calificaciones').value);
+        var container = document.getElementById('campos-calificaciones');
+        container.innerHTML = '';
+
+        for (var i = 1; i <= numCalificaciones; i++) {
+            var label = document.createElement('label');
+            label.innerHTML = "Calificación " + i + ": ";
+            container.appendChild(label);
+
+            var input = document.createElement('input');
+            input.type = 'number';
+            input.min = '1';
+            input.max = '10';
+            input.className = 'calificacion-input';
+            container.appendChild(input);
+
+            container.appendChild(document.createElement('br'));
+        }
+
+        document.getElementById('calcular').style.display = 'block';
+        document.getElementById('calificaciones-container').style.display = 'none';
+        container.style.display = 'block';
+    }
+
+    function calcularPromedio() {
+        var inputs = document.querySelectorAll('.calificacion-input');
+        var total = 0;
+        var valid = true;
+
+        for (var i = 0; i < inputs.length; i++) {
+            var value = parseInt(inputs[i].value);
+            if (isNaN(value) || value < 1 || value > 10) {
+                valid = false;
+                break;
+            }
+            total += value;
+        }
+
+        if (valid) {
+            var promedio = total / inputs.length;
+            document.getElementById('resultado').innerText = "Tu promedio es: " + promedio.toFixed(2);
+        } else {
+            document.getElementById('resultado').innerText = "Por favor ingresa todas las calificaciones válidas del 1 al 10.";
+        }
+    }
+</script>
+
+</body>
+</html>
